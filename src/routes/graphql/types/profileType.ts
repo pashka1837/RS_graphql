@@ -1,12 +1,9 @@
-import {
-  GraphQLBoolean,
-  GraphQLInt,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { GraphQLBoolean, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { UUIDType } from './uuidType.js';
-import { memberTypeIdENUM } from './memberType.js';
+import { memberType, memberTypeIdENUM } from './memberType.js';
+import { myPrisma } from '../index.js';
 
 const profileType = new GraphQLObjectType({
   name: 'profileType',
@@ -25,6 +22,16 @@ const profileType = new GraphQLObjectType({
     },
     memberTypeId: {
       type: memberTypeIdENUM,
+    },
+    memberType: {
+      type: memberType,
+      resolve: async (root, _args, prisma: myPrisma) => {
+        return await prisma.memberType.findUnique({
+          where: {
+            id: root.memberTypeId,
+          },
+        });
+      },
     },
   }),
 });

@@ -3,10 +3,7 @@ import { memberType } from '../types/memberType.js';
 import { postType } from '../types/postType.js';
 import { userType } from '../types/userType.js';
 import { profileType } from '../types/profileType.js';
-import { PrismaClient } from '@prisma/client';
-import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library.js';
-
-type myPrisma = PrismaClient<PrismaClientOptions, never, DefaultArgs>;
+import { myPrisma } from '../index.js';
 
 export const getAllQueries = {
   memberTypes: {

@@ -1,16 +1,11 @@
-import {
-  GraphQLFloat,
-  GraphQLInt,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+import { GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { UUIDType } from './uuidType.js';
 import { profileType } from './profileType.js';
-import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library.js';
-import { PrismaClient } from '@prisma/client';
-
-type myPrisma = PrismaClient<PrismaClientOptions, never, DefaultArgs>;
+import { postType } from './postType.js';
+import { myPrisma } from '../index.js';
 
 const userType = new GraphQLObjectType({
   name: 'userType',
@@ -26,12 +21,20 @@ const userType = new GraphQLObjectType({
     },
     profile: {
       type: profileType,
-
       resolve: async (root, _args, prisma: myPrisma) => {
         return await prisma.profile.findUnique({
           where: {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             userId: root.id,
+          },
+        });
+      },
+    },
+    posts: {
+      type: new GraphQLList(postType),
+      resolve: (root, _args, prisma: myPrisma) => {
+        return prisma.post.findMany({
+          where: {
+            authorId: root.id,
           },
         });
       },

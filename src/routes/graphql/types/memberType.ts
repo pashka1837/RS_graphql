@@ -1,10 +1,4 @@
-import {
-  GraphQLEnumType,
-  GraphQLFloat,
-  GraphQLInt,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql';
+import { GraphQLEnumType, GraphQLFloat, GraphQLInt, GraphQLObjectType } from 'graphql';
 
 const memberTypeIdENUM = new GraphQLEnumType({
   name: 'MemberTypeId',

@@ -5,6 +5,8 @@ import { memberType } from './types/memberType.js';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library.js';
 
+export type myPrisma = PrismaClient<PrismaClientOptions, never, DefaultArgs>;
+
 // const schema = buildSchema(`
 // type memberType {
 //   id: String
