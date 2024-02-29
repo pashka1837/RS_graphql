@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Type } from '@fastify/type-provider-typebox';
-import { GraphQLList, GraphQLObjectType, GraphQLSchema } from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema } from 'graphql';
 import { memberType, memberTypeIdENUM } from './types/memberType.js';
 import { PrismaClient } from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library.js';
-import { postType } from './types/post.js';
-import { userType } from './types/users.js';
-import { profileType } from './types/profile.js';
+import { postType } from './types/postType.js';
+import { userType } from './types/userType.js';
+import { profileType } from './types/profileType.js';
+import { UUIDType } from './types/uuidType.js';
+import { getAllQueries } from './queries/getAll.js';
+import { getByIdQueries } from './queries/getById.js';
 
 export const gqlResponseSchema = Type.Partial(
   Type.Object({
@@ -26,34 +30,17 @@ export const createGqlResponseSchema = {
   ),
 };
 
-const queryBuilder = (prisma: PrismaClient<PrismaClientOptions, never, DefaultArgs>) =>
-  new GraphQLObjectType({
-    name: 'Query',
-    fields: () => ({
-      memberTypes: {
-        type: new GraphQLList(memberType),
-        resolve: (_) => prisma.memberType.findMany(),
-      },
-      posts: {
-        type: new GraphQLList(postType),
-        resolve: (_) => prisma.post.findMany(),
-      },
-      users: {
-        type: new GraphQLList(userType),
-        resolve: (_) => prisma.user.findMany(),
-      },
-      profiles: {
-        type: new GraphQLList(profileType),
-        resolve: (_) => prisma.profile.findMany(),
-      },
-    }),
-  });
+const queryBuilder = new GraphQLObjectType({
+  name: 'Query',
+  fields: () => ({
+    ...getAllQueries,
+    ...getByIdQueries,
+  }),
+});
 
-export function myShemaBuilder(
-  prisma: PrismaClient<PrismaClientOptions, never, DefaultArgs>,
-) {
+export function myShemaBuilder() {
   return new GraphQLSchema({
-    query: queryBuilder(prisma),
+    query: queryBuilder,
     types: [memberType, postType, userType, profileType, memberTypeIdENUM],
   });
 }

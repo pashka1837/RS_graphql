@@ -37,17 +37,24 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
     async handler(req) {
       console.log(`hey`, req.body.query);
       const source = req.body.query;
-      // const query = queryBuilder(prisma);
-      // const schema: GraphQLSchema = new GraphQLSchema({
-      //   query: query,
-      //   types: [memberType],
-      // });
-      const schema = myShemaBuilder(prisma);
-      // const root = createRoot(prisma);
+      const vars = req.body.variables;
+      // console.log(vars);
 
-      const response = await graphql({ schema, source });
-      console.log(response.data);
-      return { data: response.data };
+      const schema = myShemaBuilder();
+      try {
+        const response = await graphql({
+          schema,
+          source,
+          variableValues: vars,
+          contextValue: prisma,
+        });
+        console.log(response);
+        return { data: response.data };
+      } catch (error) {
+        return { errors: error };
+      }
+
+      // console.log(response.data);
     },
   });
 };

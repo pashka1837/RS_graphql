@@ -9,8 +9,8 @@ import {
 const memberTypeIdENUM = new GraphQLEnumType({
   name: 'MemberTypeId',
   values: {
-    BUSINESS: { value: 'business' },
-    BASIC: { value: 'basic' },
+    business: { value: 'business' },
+    basic: { value: 'basic' },
   },
 });
 
