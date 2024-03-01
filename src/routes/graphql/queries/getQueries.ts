@@ -1,11 +1,11 @@
 import { GraphQLList } from 'graphql';
-import { memberType } from '../types/memberType.js';
 import { postType } from '../types/postType.js';
 import { userType } from '../types/userType.js';
 import { profileType } from '../types/profileType.js';
+import { memberType } from '../types/memberType.js';
 import { myPrisma } from '../index.js';
 
-export const getAllQueries = {
+export const getQueries = {
   memberTypes: {
     type: new GraphQLList(memberType),
     resolve: (_root, _args, prisma: myPrisma) => prisma.memberType.findMany(),

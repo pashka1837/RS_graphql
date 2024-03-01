@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Type } from '@fastify/type-provider-typebox';
-import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { memberType, memberTypeIdENUM } from './types/memberType.js';
-import { PrismaClient } from '@prisma/client';
-import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library.js';
+import { GraphQLObjectType, GraphQLSchema } from 'graphql';
+
 import { postType } from './types/postType.js';
 import { userType } from './types/userType.js';
 import { profileType } from './types/profileType.js';
-import { UUIDType } from './types/uuidType.js';
-import { getAllQueries } from './queries/getAll.js';
-import { getByIdQueries } from './queries/getById.js';
+import { memberType, memberTypeIdENUM } from './types/memberType.js';
+
 import { CreatePostInput } from './inputs/CreatePostInput.js';
 import { CreateProfileInput } from './inputs/CreateProfileInput.js';
 import { CreateUserInput } from './inputs/CreateUserInput.js';
-import { postById } from './mutations/mutations.js';
+
+import { getByIdQueries } from './queries/getByIdQueries.js';
+import { getQueries } from './queries/getQueries.js';
+
+import { postMutations } from './mutations/postMutations.js';
+import { deleteMutations } from './mutations/deleteMutations.js';
 
 export const gqlResponseSchema = Type.Partial(
   Type.Object({
@@ -37,7 +39,7 @@ export const createGqlResponseSchema = {
 const queryBuilder = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    ...getAllQueries,
+    ...getQueries,
     ...getByIdQueries,
   }),
 });
@@ -45,23 +47,22 @@ const queryBuilder = new GraphQLObjectType({
 const mutationBuilder = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
-    ...postById,
+    ...postMutations,
+    ...deleteMutations,
   }),
 });
 
-export function myShemaBuilder() {
-  return new GraphQLSchema({
-    query: queryBuilder,
-    mutation: mutationBuilder,
-    types: [
-      memberType,
-      postType,
-      userType,
-      profileType,
-      memberTypeIdENUM,
-      CreatePostInput,
-      CreateProfileInput,
-      CreateUserInput,
-    ],
-  });
-}
+export const schema = new GraphQLSchema({
+  query: queryBuilder,
+  mutation: mutationBuilder,
+  types: [
+    memberType,
+    postType,
+    userType,
+    profileType,
+    memberTypeIdENUM,
+    CreatePostInput,
+    CreateProfileInput,
+    CreateUserInput,
+  ],
+});

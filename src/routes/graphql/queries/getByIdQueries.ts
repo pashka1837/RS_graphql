@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { GraphQLNonNull } from 'graphql';
-import { memberType, memberTypeIdENUM } from '../types/memberType.js';
 import { postType } from '../types/postType.js';
 import { userType } from '../types/userType.js';
-import { profileType } from '../types/profileType.js';
 import { UUIDType } from '../types/uuidType.js';
+import { profileType } from '../types/profileType.js';
+import { memberType, memberTypeIdENUM } from '../types/memberType.js';
 import { myPrisma } from '../index.js';
 
 export const getByIdQueries = {

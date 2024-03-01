@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
-import { createGqlResponseSchema, gqlResponseSchema, myShemaBuilder } from './schemas.js';
+import { createGqlResponseSchema, gqlResponseSchema, schema } from './schemas.js';
 import { graphql } from 'graphql';
 import { PrismaClient } from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library.js';
@@ -41,28 +41,15 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
       const vars = req.body.variables;
       // console.log(vars);
 
-      const schema = myShemaBuilder();
       const response = await graphql({
         schema,
         source,
         variableValues: vars,
         contextValue: prisma,
       });
-      return { data: response.data, errors: response.errors };
-      // try {
-      //   const response = await graphql({
-      //     schema,
-      //     source,
-      //     variableValues: vars,
-      //     contextValue: prisma,
-      //   });
-      //   console.log(response);
-      //   return { data: response.data };
-      // } catch (error) {
-      //   return { errors: error };
-      // }
 
-      // console.log(response.data);
+      console.log(response.data, response.errors);
+      return { data: response.data, errors: response.errors };
     },
   });
 };
