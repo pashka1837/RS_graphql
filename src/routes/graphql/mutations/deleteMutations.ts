@@ -2,6 +2,7 @@
 import { GraphQLBoolean } from 'graphql';
 import { myPrisma } from '../index.js';
 import { UUIDType } from '../types/uuidType.js';
+import { userType } from '../types/userType.js';
 
 export const deleteMutations = {
   deletePost: {
@@ -45,6 +46,27 @@ export const deleteMutations = {
       await prisma.user.delete({
         where: {
           id: id,
+        },
+      });
+    },
+  },
+  unsubscribeFrom: {
+    type: GraphQLBoolean,
+    args: {
+      userId: {
+        type: UUIDType,
+      },
+      authorId: {
+        type: UUIDType,
+      },
+    },
+    resolve: async (_root, { userId, authorId }, prisma: myPrisma) => {
+      await prisma.subscribersOnAuthors.delete({
+        where: {
+          subscriberId_authorId: {
+            subscriberId: userId,
+            authorId: authorId,
+          },
         },
       });
     },

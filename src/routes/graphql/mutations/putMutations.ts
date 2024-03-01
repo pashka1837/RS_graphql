@@ -58,4 +58,28 @@ export const putMutations = {
         data: dto,
       }),
   },
+  subscribeTo: {
+    type: userType,
+    args: {
+      userId: {
+        type: UUIDType,
+      },
+      authorId: {
+        type: UUIDType,
+      },
+    },
+    resolve: (_root, { userId, authorId }, prisma: myPrisma) =>
+      prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          userSubscribedTo: {
+            create: {
+              authorId: authorId,
+            },
+          },
+        },
+      }),
+  },
 };
