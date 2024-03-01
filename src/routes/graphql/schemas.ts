@@ -10,6 +10,10 @@ import { profileType } from './types/profileType.js';
 import { UUIDType } from './types/uuidType.js';
 import { getAllQueries } from './queries/getAll.js';
 import { getByIdQueries } from './queries/getById.js';
+import { CreatePostInput } from './inputs/CreatePostInput.js';
+import { CreateProfileInput } from './inputs/CreateProfileInput.js';
+import { CreateUserInput } from './inputs/CreateUserInput.js';
+import { postById } from './mutations/mutations.js';
 
 export const gqlResponseSchema = Type.Partial(
   Type.Object({
@@ -38,9 +42,26 @@ const queryBuilder = new GraphQLObjectType({
   }),
 });
 
+const mutationBuilder = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: () => ({
+    ...postById,
+  }),
+});
+
 export function myShemaBuilder() {
   return new GraphQLSchema({
     query: queryBuilder,
-    types: [memberType, postType, userType, profileType, memberTypeIdENUM],
+    mutation: mutationBuilder,
+    types: [
+      memberType,
+      postType,
+      userType,
+      profileType,
+      memberTypeIdENUM,
+      CreatePostInput,
+      CreateProfileInput,
+      CreateUserInput,
+    ],
   });
 }

@@ -1,8 +1,7 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { createGqlResponseSchema, gqlResponseSchema, myShemaBuilder } from './schemas.js';
-import { GraphQLSchema, buildSchema, graphql } from 'graphql';
-import { memberType } from './types/memberType.js';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { graphql } from 'graphql';
+import { PrismaClient } from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library.js';
 
 export type myPrisma = PrismaClient<PrismaClientOptions, never, DefaultArgs>;
@@ -43,18 +42,25 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
       // console.log(vars);
 
       const schema = myShemaBuilder();
-      try {
-        const response = await graphql({
-          schema,
-          source,
-          variableValues: vars,
-          contextValue: prisma,
-        });
-        console.log(response);
-        return { data: response.data };
-      } catch (error) {
-        return { errors: error };
-      }
+      const response = await graphql({
+        schema,
+        source,
+        variableValues: vars,
+        contextValue: prisma,
+      });
+      return { data: response.data, errors: response.errors };
+      // try {
+      //   const response = await graphql({
+      //     schema,
+      //     source,
+      //     variableValues: vars,
+      //     contextValue: prisma,
+      //   });
+      //   console.log(response);
+      //   return { data: response.data };
+      // } catch (error) {
+      //   return { errors: error };
+      // }
 
       // console.log(response.data);
     },
