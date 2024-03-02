@@ -88,10 +88,10 @@ await test('gql-mutations', async (t) => {
     } = await gqlQuery(app, {
       // https://graphql.org/learn/queries/#multiple-fields-in-mutations
       query: `mutation ($userId: UUID!, $profileId: UUID!, $postId: UUID!) {
-      deletePost(id: $postId)
-      deleteProfile(id: $profileId)
-      deleteUser(id: $userId)
-  }`,
+        deletePost(id: $postId)
+        deleteProfile(id: $profileId)
+        deleteUser(id: $userId)
+    }`,
       variables: {
         postId: post1.id,
         profileId: profile1.id,
