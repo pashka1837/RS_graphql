@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { GraphQLBoolean } from 'graphql';
-import { myPrisma } from '../index.js';
 import { UUIDType } from '../types/uuidType.js';
-import { userType } from '../types/userType.js';
+import { MyContext } from '../index.js';
 
 export const deleteMutations = {
   deletePost: {
@@ -12,7 +11,8 @@ export const deleteMutations = {
         type: UUIDType,
       },
     },
-    resolve: async (_root, { id }, prisma: myPrisma) => {
+    resolve: async (_root, { id }, context: MyContext) => {
+      const { prisma } = context;
       await prisma.post.delete({
         where: {
           id: id,
@@ -27,7 +27,8 @@ export const deleteMutations = {
         type: UUIDType,
       },
     },
-    resolve: async (_root, { id }, prisma: myPrisma) => {
+    resolve: async (_root, { id }, context: MyContext) => {
+      const { prisma } = context;
       await prisma.profile.delete({
         where: {
           id: id,
@@ -42,7 +43,8 @@ export const deleteMutations = {
         type: UUIDType,
       },
     },
-    resolve: async (_root, { id }, prisma: myPrisma) => {
+    resolve: async (_root, { id }, context: MyContext) => {
+      const { prisma } = context;
       await prisma.user.delete({
         where: {
           id: id,
@@ -60,7 +62,8 @@ export const deleteMutations = {
         type: UUIDType,
       },
     },
-    resolve: async (_root, { userId, authorId }, prisma: myPrisma) => {
+    resolve: async (_root, { userId, authorId }, context: MyContext) => {
+      const { prisma } = context;
       await prisma.subscribersOnAuthors.delete({
         where: {
           subscriberId_authorId: {

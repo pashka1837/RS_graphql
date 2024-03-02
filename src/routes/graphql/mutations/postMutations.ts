@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { myPrisma } from '../index.js';
+import { MyContext } from '../index.js';
 import { CreatePostInput } from '../inputs/CreatePostInput.js';
 import { CreateProfileInput } from '../inputs/CreateProfileInput.js';
 import { CreateUserInput } from '../inputs/CreateUserInput.js';
@@ -16,10 +17,12 @@ export const postMutations = {
         type: CreatePostInput,
       },
     },
-    resolve: (_root, { dto }, prisma: myPrisma) =>
-      prisma.post.create({
+    resolve: async (_root, { dto }, context: MyContext) => {
+      const { prisma } = context;
+      return await prisma.post.create({
         data: dto,
-      }),
+      });
+    },
   },
   createUser: {
     type: userType,
@@ -28,10 +31,12 @@ export const postMutations = {
         type: CreateUserInput,
       },
     },
-    resolve: (_root, { dto }, prisma: myPrisma) =>
-      prisma.user.create({
+    resolve: async (_root, { dto }, context: MyContext) => {
+      const { prisma } = context;
+      return await prisma.user.create({
         data: dto,
-      }),
+      });
+    },
   },
   createProfile: {
     type: profileType,
@@ -40,9 +45,11 @@ export const postMutations = {
         type: CreateProfileInput,
       },
     },
-    resolve: (_root, { dto }, prisma: myPrisma) =>
-      prisma.profile.create({
+    resolve: async (_root, { dto }, context: MyContext) => {
+      const { prisma } = context;
+      return await prisma.profile.create({
         data: dto,
-      }),
+      });
+    },
   },
 };

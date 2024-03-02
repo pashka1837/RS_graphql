@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { myPrisma } from '../index.js';
+import { MyContext } from '../index.js';
 
 import { postType } from '../types/postType.js';
 import { userType } from '../types/userType.js';
@@ -20,11 +20,13 @@ export const putMutations = {
         type: UUIDType,
       },
     },
-    resolve: (_root, { dto, id }, prisma: myPrisma) =>
-      prisma.post.update({
+    resolve: async (_root, { dto, id }, context: MyContext) => {
+      const { prisma } = context;
+      return await prisma.post.update({
         where: { id: id },
         data: dto,
-      }),
+      });
+    },
   },
   changeUser: {
     type: userType,
@@ -36,11 +38,13 @@ export const putMutations = {
         type: UUIDType,
       },
     },
-    resolve: (_root, { dto, id }, prisma: myPrisma) =>
-      prisma.user.update({
+    resolve: async (_root, { dto, id }, context: MyContext) => {
+      const { prisma } = context;
+      return await prisma.user.update({
         where: { id: id },
         data: dto,
-      }),
+      });
+    },
   },
   changeProfile: {
     type: profileType,
@@ -52,11 +56,13 @@ export const putMutations = {
         type: UUIDType,
       },
     },
-    resolve: (_root, { dto, id }, prisma: myPrisma) =>
-      prisma.profile.update({
+    resolve: async (_root, { dto, id }, context: MyContext) => {
+      const { prisma } = context;
+      return await prisma.profile.update({
         where: { id: id },
         data: dto,
-      }),
+      });
+    },
   },
   subscribeTo: {
     type: userType,
@@ -68,8 +74,9 @@ export const putMutations = {
         type: UUIDType,
       },
     },
-    resolve: (_root, { userId, authorId }, prisma: myPrisma) =>
-      prisma.user.update({
+    resolve: async (_root, { userId, authorId }, context: MyContext) => {
+      const { prisma } = context;
+      return await prisma.user.update({
         where: {
           id: userId,
         },
@@ -80,6 +87,7 @@ export const putMutations = {
             },
           },
         },
-      }),
+      });
+    },
   },
 };
