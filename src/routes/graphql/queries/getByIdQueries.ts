@@ -16,7 +16,7 @@ export const getByIdQueries = {
       },
     },
     resolve: async (_root, { id }, context: MyContext) => {
-      const { prisma, dataloaders } = context;
+      const { prisma } = context;
       return await prisma.memberType.findUnique({
         where: {
           id: id,
@@ -32,7 +32,7 @@ export const getByIdQueries = {
       },
     },
     resolve: async (_root, { id }, context: MyContext) => {
-      const { prisma, dataloaders } = context;
+      const { prisma } = context;
       return await prisma.user.findUnique({
         where: {
           id: id,
@@ -48,7 +48,7 @@ export const getByIdQueries = {
       },
     },
     resolve: async (_root, { id }, context: MyContext) => {
-      const { prisma, dataloaders } = context;
+      const { prisma } = context;
       return await prisma.post.findUnique({
         where: {
           id: id,
@@ -64,7 +64,7 @@ export const getByIdQueries = {
       },
     },
     resolve: async (_root, { id }, context: MyContext) => {
-      const { prisma, dataloaders } = context;
+      const { prisma } = context;
       return await prisma.profile.findUnique({
         where: {
           id: id,

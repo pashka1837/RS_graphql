@@ -33,12 +33,6 @@ const userType = new GraphQLObjectType({
           dataloaders.set(info.fieldNodes, dl);
         }
         return await dl.load(root.id as string);
-
-        // return await prisma.profile.findUnique({
-        //   where: {
-        //     userId: root.id,
-        //   },
-        // });
       },
     },
     posts: {
@@ -55,12 +49,6 @@ const userType = new GraphQLObjectType({
         }
 
         return await dl.load(root.id as string);
-
-        // return prisma.post.findMany({
-        //   where: {
-        //     authorId: root.id,
-        //   },
-        // });
       },
     },
     userSubscribedTo: {

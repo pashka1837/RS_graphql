@@ -15,14 +15,14 @@ export const getQueries = {
   memberTypes: {
     type: new GraphQLList(memberType),
     resolve: (_root, _args, context: MyContext) => {
-      const { prisma, dataloaders } = context;
+      const { prisma } = context;
       return prisma.memberType.findMany();
     },
   },
   posts: {
     type: new GraphQLList(postType),
     resolve: (_root, _args, context: MyContext) => {
-      const { prisma, dataloaders } = context;
+      const { prisma } = context;
       return prisma.post.findMany();
     },
   },
@@ -53,25 +53,14 @@ export const getQueries = {
         });
         dataloaders.set('users', dl);
       }
-      // console.log(await dl.load('users'));
       const returnValue = (await dl.load('users')) as any;
       return returnValue.users;
-      // return prisma.user.findMany({
-      //   include: {
-      //     subscribedToUser: !!Object.keys(fields).find(
-      //       (key) => key === 'subscribedToUser',
-      //     ),
-      //     userSubscribedTo: !!Object.keys(fields).find(
-      //       (key) => key === 'userSubscribedTo',
-      //     ),
-      //   },
-      // });
     },
   },
   profiles: {
     type: new GraphQLList(profileType),
     resolve: (_root, _args, context: MyContext) => {
-      const { prisma, dataloaders } = context;
+      const { prisma } = context;
       return prisma.profile.findMany();
     },
   },
