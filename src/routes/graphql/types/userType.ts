@@ -5,7 +5,7 @@ import { GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString } from 'gra
 import { UUIDType } from './uuidType.js';
 import { profileType } from './profileType.js';
 import { postType } from './postType.js';
-import { MyContext } from '../index.js';
+import { MyContext, UserPrismaT } from '../index.js';
 import DataLoader from 'dataloader';
 
 const userType = new GraphQLObjectType({
@@ -32,7 +32,7 @@ const userType = new GraphQLObjectType({
           });
           dataloaders.set(info.fieldNodes, dl);
         }
-        return await dl.load(root.id as string);
+        return dl.load(root.id as string);
       },
     },
     posts: {
@@ -47,8 +47,7 @@ const userType = new GraphQLObjectType({
           });
           dataloaders.set(info.fieldNodes, dl);
         }
-
-        return await dl.load(root.id as string);
+        return dl.load(root.id as string);
       },
     },
     userSubscribedTo: {
@@ -66,11 +65,9 @@ const userType = new GraphQLObjectType({
               },
             },
           });
-
-        const usersObj = (await dl?.load('users')) as any;
-        const users = usersObj.users;
+        const users = (await dl?.load('users')) as UserPrismaT[];
         const user = users.find((u) => u.id === root.id);
-        return user.userSubscribedTo;
+        return user!.userSubscribedTo;
       },
     },
     subscribedToUser: {
@@ -88,11 +85,9 @@ const userType = new GraphQLObjectType({
               },
             },
           });
-
-        const usersObj = (await dl?.load('users')) as any;
-        const users = usersObj.users;
+        const users = (await dl?.load('users')) as UserPrismaT[];
         const user = users.find((u) => u.id === root.id);
-        return user.subscribedToUser;
+        return user!.subscribedToUser;
       },
     },
   }),

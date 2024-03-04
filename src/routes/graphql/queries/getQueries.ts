@@ -48,13 +48,11 @@ export const getQueries = {
               ),
             },
           });
-          const some = [{ users, id: 'users' }];
-          return ids.map((id) => some.find((s) => s.id === id));
+          return ids.map((id) => (id === 'users' ? users : undefined));
         });
         dataloaders.set('users', dl);
       }
-      const returnValue = (await dl.load('users')) as any;
-      return returnValue.users;
+      return dl.load('users');
     },
   },
   profiles: {

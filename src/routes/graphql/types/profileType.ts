@@ -38,11 +38,6 @@ const profileType = new GraphQLObjectType({
           dataloaders.set(info.fieldNodes, dl);
         }
         return dl.load(root.memberTypeId as string);
-        // return await prisma.memberType.findUnique({
-        //   where: {
-        //     id: root.memberTypeId,
-        //   },
-        // });
       },
     },
   }),
